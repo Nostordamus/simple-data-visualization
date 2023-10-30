@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Untitled Document</title>
+		<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=NCck3jmWDTvjBOWcWbBW3UyizoyHgZSFpTBgZ0KjRpxCbFrOFzN7x-d4TNvNBSmLT325bZbBIbPhd-nEYKFl5OclPWXPyeclFfYRxPnML2D5gRJcTlqbT9yguE35n8adhtamCLc3EIGepNbTxuF7gA13u6KN8rW7N2gceRVnMO7XdGka1gjN9xzw3Urx1BReqgegDxK-AUVHeC3Zex8dnFeNWB0qzLEFrMCva2jxhqZyOctZ9mgSp5Sdjd3lGKET0ZMdOFkstL0LIsfd1o5BTg4T5NOYgAS9YXo2lBPmpX_k_UFgSarTpQ0F9T4IhGpYRpg-QhIoVi7CA9KbjuB8wHX2dmgNgyTkfS5WwPapVWYfiDPOPt5Rix4wEhUhWz5kgb8-6e_xDUaH1xnpSD13WA" charset="UTF-8"></script><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script>
+			function draw(){
+				var aryData = (document.getElementById("ancet").value).split('\n');
+				var c = document.getElementById("canv");
+				c.width = 1400;
+				c.height = 500;
+				var sum = 0;
+				for(var i = 0; i < aryData.length; i++){
+					var aryHlp = aryData[i].split(' ');
+					sum += Number(aryHlp[1]);
+				}
+				var x = 100/sum;
+				var ctx = c.getContext("2d"); 
+				var color = new Array();
+				var position = 0;
+				var col = ['#EF4D85', '#52C0EE', '#FFFF00', '#00FF00'];
+				for(var i = 0;i < aryData.length; i++){
+					var aryHlp = aryData[i].split(' ');
+					ctx.fillStyle = col[i];
+					ctx.fillRect(100, position, 150, aryHlp[1] * x * 4);
+					position += (aryHlp[1] * x * 4);
+					ctx.fillStyle = "black";
+					ctx.font = "bold 20px Arial";
+					var txtpos = (ctx.measureText(aryHlp[0]).width) / 2;
+					ctx.fillText(aryHlp[0], 175 - txtpos, position - aryHlp[1] * x * 2);
+					var txt = Math.round(aryHlp[1] * 100 / sum) + "%";
+					txtpos = (ctx.measureText(txt).width) / 2;
+					ctx.fillText(txt, 175 - txtpos, position - aryHlp[1] * x * 2 - 20);
+					if(i < aryData.length-1){
+						ctx.beginPath();
+						ctx.setLineDash([2, 2]);
+						ctx.moveTo(250, position);
+						ctx.lineTo(650, position);
+						ctx.stroke();
+						ctx.setLineDash([0]);
+					}
+				}
+				var aryDatas = (document.getElementById("extra").value).split('\n');
+				var sums = 0;
+				for(var i = 0;i < aryDatas.length; i++){
+					var aryHlp = aryDatas[i].split(' ');
+					sums += Number(aryHlp[1]);
+					
+				}
+				var xs = 100 / sums;
+				var position = 0;
+				var pcol;
+				var yb;
+				var summ = 0;
+				var aryPers = Array();
+				for(var i = 0; i < aryDatas.length; i++){
+					var aryHlp = aryDatas[i].split(' ');
+					if(i%2 == 1){
+						ctx.globalAlpha = 1;
+						var pers1 = summ;
+						var pers2 = aryHlp[1];
+						summ += Number(aryHlp[1]);
+						ctx.fillStyle = "black";
+						ctx.font = "bold 15px Arial";
+						var txt = Math.round(pers1 / summ * 100) + "%";
+						aryPers[i - 1] = txt;
+						//txtpos=(ctx.measureText(txt).width)/2;
+						ctx.fillText(txt, 465, position - pers1 * xs * 2 + 5);
+						ctx.fillStyle = pcol;
+						ctx.fillRect(300, position, 150, aryHlp[1] * xs * 4);
+						ctx.beginPath();
+						ctx.moveTo(455, position + 2);
+						ctx.lineTo(460, position + 2);
+						position += aryHlp[1] * xs * 4;
+						ctx.lineTo(460, position - 2);
+						ctx.lineTo(455, position - 2);
+						ctx.stroke();
+						ctx.moveTo(500, yb + 2);
+						ctx.lineTo(505, yb + 2);
+						ctx.lineTo(505, position - 2);
+						ctx.lineTo(500, position - 2);
+						ctx.stroke();
+						ctx.fillStyle = "black";
+						ctx.font = "bold 15px Arial";
+						txt=Math.round(pers2 / summ * 100) + "%";
+						ctx.fillText(txt, 465, position - aryHlp[1] * xs * 2 + 5);
+						aryPers[i] = txt;
+						ctx.fillStyle = "black";
+						ctx.font = "bold 15px Arial";
+						txt = Math.round(summ / sums * 100) + "%";
+						ctx.fillText(txt, 510, position - summ * xs * 2);
+						summ = 0;
+					} else {
+						summ += Number(aryHlp[1]);
+						yb = position;
+						ctx.fillStyle = col[i / 2];
+						pcol = col[i / 2];
+						ctx.globalAlpha = 0.7;
+						ctx.fillRect(300, position, 150, aryHlp[1] * xs * 4);
+						ctx.globalAlpha = 1;
+						ctx.beginPath();
+						ctx.moveTo(455, position + 2);
+						ctx.lineTo(460, position + 2);
+						position += aryHlp[1] * xs * 4;
+						ctx.lineTo(460, position - 2);
+						//ctx.lin(455, position - 2);
+						ctx.lineTo(455, position - 2);
+						ctx.stroke();
+					}	
+					ctx.fillStyle = "black";
+					ctx.font = "bold 20px Arial";
+					var txtpos = (ctx.measureText(aryHlp[1]).width) / 2;
+					ctx.fillText(aryHlp[1], 350 - txtpos, position - aryHlp[1] * xs * 2);
+					if(i%2 == 0){
+						ctx.font = "bold 10px Arial";
+						ctx.fillText("No-Chocolate eaters", 350 - txtpos, position - aryHlp[1] * xs * 2 + 15);
+					} else {
+						ctx.font = "bold 10px Arial";
+						ctx.fillText("Chocolate eaters", 350 - txtpos, position - aryHlp[1] * xs * 2 + 15);
+					}
+					ctx.globalAlpha = 0.5;
+					ctx.fillRect(300, 0, 30, 400);
+				}
+				position = 0;
+				positionY = 100;
+				var aryPos = Array();
+				for(var i = 0; i < aryData.length; i++){
+					var aryHlp = aryData[i].split(' ');
+					var aryVal1 = aryDatas[i * 2].split(' ');
+					var aryVal2 = aryDatas[i * 2 + 1].split(' ');
+					var gr = aryHlp[1] * x * 4;
+					var him = gr / (Number(aryVal1[1]) + Number(aryVal2[1]));
+					ctx.fillStyle = col[i];
+					ctx.globalAlpha = 0.7;
+					ctx.fillRect(650, position, 150, aryVal1[1] * him);
+					ctx.font = "bold 16px Arial";
+					//var txtpos=(ctx.measureText(aryHlp[1]).width)/2;
+					ctx.beginPath();
+					ctx.moveTo(805, position + 2);
+					ctx.lineTo(810, position + 2);
+					position += (aryVal1[1] * him);
+					ctx.lineTo(810, position - 2);
+					ctx.lineTo(805, position - 2);
+					ctx.stroke();
+					ctx.moveTo(805, position + 2);
+					ctx.lineTo(810, position + 2);
+					ctx.fillStyle = "black";
+					ctx.fillText(aryPers[i * 2], 815, position - aryVal1[1] * him / 2 + 5);
+					ctx.font = "bold 12px Arial";
+					ctx.fillText("No Chocolate-eaters", 666, position - aryVal1[1] * him / 2 + 5);
+					ctx.font = "bold 16px Arial";
+					ctx.fillStyle = col[i];
+					ctx.globalAlpha = 1;
+					ctx.fillRect(650, position, 150, aryVal2[1] * him);
+					position += (aryVal2[1] * him);
+					ctx.fillStyle = "black";
+					ctx.fillText(aryPers[i * 2 + 1], 815, position - aryVal2[1] * him / 2 + 5);
+					ctx.font = "bold 12px Arial";
+					ctx.fillText("Chocolate-eaters", 666, position - aryVal2[1] * him / 2 + 5);
+					ctx.font = "bold 16px Arial";
+					ctx.fillStyle = col[i];
+					ctx.lineTo(810, position - 2);
+					ctx.lineTo(805, position - 2);
+					ctx.stroke();
+					ctx.fillStyle = col[i];
+					ctx.fillRect(900, positionY, 150, aryVal2[1] * him);
+					ctx.fillRect(1100, positionY, 150, aryVal2[1] * him);
+					aryPos[i] = positionY;
+					positionY += (aryVal2[1] * him);
+				}
+				var real = 0;
+				for(var i = 0; i < aryData.length; i++){
+					var aryHlp = aryData[i].split(' ');
+					var pom = aryPers[i * 2 + 1].substring(0, aryPers[i * 2 + 1].length-1)
+					var txt = pom * aryHlp[1] / 100; 
+					ctx.fillStyle = "black";
+					ctx.font = "bold 16px Arial";
+					ctx.fillText(aryHlp[0], 910, aryPos[i] + 20);
+					ctx.font = "bold 12px Arial";
+					if(i%2 ){
+						ctx.fillText("Chocolate eaters", 910, aryPos[i] + 35);
+					} else  {
+						ctx.fillText("Chocolate eaters", 910, aryPos[i] + 35);
+					}
+					ctx.font = "bold 20px Arial";
+					ctx.fillText(txt + "%", 910, aryPos[i] + 55);
+					real += txt;
+				}
+				real = 100 / real;
+				for(var i = 0;i < aryData.length; i++){
+					var aryHlp = aryData[i].split(' ');
+					var pom = aryPers[i * 2 + 1].substring(0, aryPers[i * 2 + 1].length-1)
+					var txt = pom * aryHlp[1] / 100; 
+					txt = Math.round(200 * txt * real / 100);
+					ctx.fillStyle = "black";
+					ctx.font = "bold 16px Arial";
+					ctx.fillText(aryHlp[0], 1111, aryPos[i] + 20);
+					ctx.font = "bold 12px Arial";
+					if(i%2 ){
+						ctx.fillText("Chocolate eaters", 1111, aryPos[i] + 35);
+					} else {
+						ctx.fillText("Chocolate eaters", 1111, aryPos[i] + 35);
+					}
+					ctx.font = "bold 20px Arial";
+					ctx.fillText(txt, 1111, aryPos[i] + 55);
+				}
+				ctx.fillStyle = "black";
+				ctx.font = "bold 25px Arial";
+				ctx.fillText("=", 1065, positionY / 2 + 50);
+			}
+		</script>
+	</head>
+	<body>
+		<textarea id="ancet" style="height: 100px">female 52
+male 48</textarea>
+		<textarea id="extra" style="height: 100px">noteater 6
+eaters 24
+noteaters 10
+eaters 10</textarea>
+		<div id="add"></div>
+		<input type="button" value="Go" onclick="draw()" /><br/>
+		<canvas id="canv" style="top:200px; position:absolute;"></canvas>
+	</body>
+</html>
