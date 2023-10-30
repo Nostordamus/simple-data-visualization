@@ -21,7 +21,7 @@ This project is a simple web-based application designed to demonstrate the capab
 
 1. Clone the repository
    ```
-   git clone https://github.com/yourusername/simple-data-visualization.git
+   git clone https://github.com/nostordamus/simple-data-visualization.git
    cd simple-data-visualization
    ```
 
